@@ -1,8 +1,7 @@
-import Image from 'next/image'
 import {Inter} from 'next/font/google'
 import {useRouter} from "next/router";
-import {Head} from "next/document";
-
+// pages/index.tsx
+import prisma from '../lib/prisma';
 const inter = Inter({subsets: ['latin']})
 
 export default function Home() {
@@ -31,3 +30,19 @@ export default function Home() {
         </>
     )
 }
+
+// index.tsx
+export const getStaticProps = async () => {
+    const feed = await prisma.post.findMany({
+        where: { published: true },
+        include: {
+            author: {
+                select: { name: true },
+            },
+        },
+    });
+    return {
+        props: { feed },
+        revalidate: 10,
+    };
+};
