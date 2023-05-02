@@ -16,33 +16,9 @@ export default function Home() {
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Create A Snippet
                 </button>
-
-                <ul className="">
-                    {
-                        posts.map(post => (
-                            <li key={post.id}>
-                                {post.title}
-                            </li>
-                        ))
-                    }
-                </ul>
             </main>
         </>
     )
 }
 
 // index.tsx
-export const getStaticProps = async () => {
-    const feed = await prisma.post.findMany({
-        where: { published: true },
-        include: {
-            author: {
-                select: { name: true },
-            },
-        },
-    });
-    return {
-        props: { feed },
-        revalidate: 10,
-    };
-};
