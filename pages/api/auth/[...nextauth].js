@@ -21,7 +21,7 @@ export default NextAuth({
                 //     throw new Error("Username and password doesn't match")
                 // }
                 const User = {username: 'ifty', password: '1234'}
-                // const result = await User.username === credentials.username
+                const result = await User.username === credentials.username
                 // if (!result) {
                 //     throw new Error("No user found with this username")
                 // }

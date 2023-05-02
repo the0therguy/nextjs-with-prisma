@@ -7,8 +7,6 @@ import Image from 'next/image'
 const SignIn = () => {
     const {data: session, status} = useSession()
     const {push} = useRouter()
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
     const router = useRouter()
     if (status === "loading") return <h1>Checking Authentication .....</h1>
 
@@ -17,15 +15,14 @@ const SignIn = () => {
         if (!values.username && !values.password) {
             return false
         }
-        console.log(values.username, values.password)
-        // const status = await signIn('credentials', {
-        //     redirect: false,
-        //     email: email,
-        //     password: password,
-        //     callbackUrl: "/"
-        // })
-        // console.log(status)
-        // if (status.ok) await router.push(status.url)
+        const status = await signIn('credentials', {
+            redirect: false,
+            username: values.username,
+            password: values.password,
+            callbackUrl: "/"
+        })
+        console.log(status)
+        if (status.ok) await router.push(status.url)
 
     };
     const onFinishFailed = (errorInfo) => {
