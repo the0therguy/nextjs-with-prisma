@@ -1,37 +1,77 @@
 import {Inter} from 'next/font/google'
-import {useRouter} from "next/router";
-// pages/index.tsx
-import prisma from '../lib/prisma';
+import { Breadcrumb, Layout, Menu, theme } from 'antd';
+const { Header, Content, Footer } = Layout;
+
 const inter = Inter({subsets: ['latin']})
 import {signOut, useSession} from "next-auth/react";
 
 export default function Home() {
     const {data: session} = useSession()
-
+    const {
+        token: { colorBgContainer },
+    } = theme.useToken();
     const handleSignOut = () => signOut({redirect: false})
     return (
-        <>
-            <main
-                className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+        <Layout>
+            <Header
+                style={{
+                    position: 'sticky',
+                    top: 0,
+                    zIndex: 1,
+                    width: '100%',
+                }}
             >
-                <button onClick={() => router.push("/add-post")}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Create A Snippet
-                </button>
-                {session ? (<>
-                    <h3>You are signed in as {session['user']['name']}</h3>
-                    {/*<img src={session['user']['image']} alt="new"/>*/}
-                    <div></div>
-                    <div>email: {session['user']['email']}</div>
-                    <button onClick={handleSignOut}>sign out</button>
-                </>) : (<>
+                <div
+                    style={{
+                        float: 'left',
+                        width: 120,
+                        height: 31,
+                        margin: '16px 24px 16px 0',
+                        background: 'rgba(255, 255, 255, 0.2)',
+                    }}
+                />
+                <Menu
+                    theme="dark"
+                    mode="horizontal"
+                    defaultSelectedKeys={['1']}
+                    items={new Array(3).fill(null).map((_, index) => ({
+                        key: String(index + 1),
+                        label: `nav ${index + 1}`,
+                    }))}
+                />
+            </Header>
+            <Content
+                className="site-layout"
+                style={{
+                    padding: '0 50px',
+                }}
+            >
+                <Breadcrumb
+                    style={{
+                        margin: '16px 0',
+                    }}
+                >
 
-                    </>
-
-                )}
-            </main>
-        </>
-    )
+                </Breadcrumb>
+                <div
+                    style={{
+                        padding: 24,
+                        minHeight: 380,
+                        background: colorBgContainer,
+                    }}
+                >
+                    Content
+                </div>
+            </Content>
+            <Footer
+                style={{
+                    textAlign: 'center',
+                }}
+            >
+                {/*Ant Design ©2023 Created by Ant UED*/}
+            </Footer>
+        </Layout>
+    );
 }
 
 // index.tsx
